@@ -24,23 +24,26 @@ app.get('/users', async (req, res) => {
     }
 })
 
-app.post('/signup', async (req, res) => {
+app.get('/user/username', async (req, res) => {
     try {
-        const { first_name, last_name, user_name, password } = req.body
-        const userExists = await pool.query('SELECT * FROM users WHERE user_name = $1', [user_name]);
-        if (userExists.rows.length > 0) {
-            return res.status(400).send('Username already taken. Please choose another.');
-        }
-        const result = await pool.query(`
-            INSERT INTO users (first_name, last_name, user_name, password) 
-            VALUES ('${first_name}', '${last_name}', '${user_name}', '${password}')`)
+        const username = req.query.username;
+        const result = await pool.query('SELECT * FROM users WHERE user_name = $1', [username]);
+        res.json(result.rows);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+});
+
+app.get('/allphotos', async(req,res)=>{
+    try {
+        const result =  await pool.query('SELECT * FROM photos')
         res.json(result.rows)
     } catch (error) {
-        console.log(error.message);
+        res.status(500).send(error.message);
         
-        res.status(500).send(error.message)
     }
 })
+
 
 
 app.get('/login', async (req, res) => {
@@ -58,6 +61,24 @@ app.get('/login', async (req, res) => {
     }
 })
 
+app.post('/signup', async (req, res) => {
+    try {
+        const { first_name, last_name, user_name, password } = req.body
+        const userExists = await pool.query('SELECT * FROM users WHERE user_name = $1', [user_name]);
+        if (userExists.rows.length > 0) {
+            return res.status(400).send('Username already taken. Please choose another.');
+        }
+        const result = await pool.query(`
+            INSERT INTO users (first_name, last_name, user_name, password) 
+            VALUES ('${first_name}', '${last_name}', '${user_name}', '${password}')`)
+        res.json(result.rows)
+    } catch (error) {
+        console.log(error.message);
+
+        res.status(500).send(error.message)
+    }
+})
+
 app.post('/login', async (req, res) => {
     try {
         let { user_name, password } = req.body
@@ -67,6 +88,21 @@ app.post('/login', async (req, res) => {
         res.status(500).send(error.message)
     }
 })
+
+
+app.post('/postimg', async (req, res) => {
+    try {
+        const { url } = req.body;
+        const result = await pool.query(`INSERT INTO photos (url) VALUES ($1) RETURNING *`, [url]);
+        res.json({ message: "Photo added successfully", photo: result.rows[0] });
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+});
+
+
+
+
 
 
 

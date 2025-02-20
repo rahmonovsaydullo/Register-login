@@ -14,9 +14,10 @@ const loginUser = async () => {
             user_name: usernameInput.value,
             password: userpasswordInput.value
         });
+        sessionStorage.setItem("username", usernameInput.value);
 
         if (response.status === 200) {
-            window.location.href = "./home/index.html";
+            window.location.href = "./home/home.html";
         } else {
             errorText.innerHTML = 'Invalid username or password';
         }

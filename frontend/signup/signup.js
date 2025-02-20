@@ -34,7 +34,7 @@ const registerUser = async () => {
         if (response.status === 200) {
             alert('Registered successfully')
             console.log("Login successful:", response.data);
-            window.location.href = "../login.html";
+            window.location.href = "../index.html";
         }
     } catch (error) {
         console.log(error);
@@ -45,8 +45,6 @@ const registerUser = async () => {
         setTimeout(() => {
             errorText.innerHTML = '';
         }, 2000);
-
-
     }
 }
 
