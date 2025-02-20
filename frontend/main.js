@@ -1,3 +1,9 @@
+let username = sessionStorage.getItem('username')
+
+
+if(username) window.location.href = './myphotos/myphotos.html'
+
+
 const usernameInput = document.getElementById('username');
 const userpasswordInput = document.getElementById('userpassword');
 const loginBtn = document.getElementById('loginBtn');
@@ -17,7 +23,7 @@ const loginUser = async () => {
         sessionStorage.setItem("username", usernameInput.value);
 
         if (response.status === 200) {
-            window.location.href = "./home/home.html";
+            window.location.href = "./myphotos/myphotos.html";
         } else {
             errorText.innerHTML = 'Invalid username or password';
         }

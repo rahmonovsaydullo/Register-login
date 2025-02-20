@@ -19,7 +19,7 @@ function addPhoto() {
             setTimeout(() => {
                 if (res.status == 200) {
                     resultText.innerHTML = 'Photo added successfully!'
-                    window.location.href = '../home/index.html'
+                    window.location.href = '../index.html'
                 }
             }, 2000);
         })
